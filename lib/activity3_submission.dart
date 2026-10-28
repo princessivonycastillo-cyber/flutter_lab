@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-// TODO: Replace this with YOUR full name.
-const String studentName = 'Juan Dela Cruz';
+const String studentName = 'Princess Ivony P. Castillo';
 
 void main() {
   runApp(const SubmissionApp());
@@ -34,6 +33,7 @@ class Registration {
   final DateTime birthdate;
   final String studentId;
   final String email;
+  final String mobile;
   final String program;
   final String yearLevel;
 
@@ -42,6 +42,7 @@ class Registration {
     required this.birthdate,
     required this.studentId,
     required this.email,
+    required this.mobile,
     required this.program,
     required this.yearLevel,
   });
@@ -63,6 +64,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _birthdateController = TextEditingController();
   final _idController = TextEditingController();
   final _emailController = TextEditingController();
+  final _mobileController = TextEditingController();
 
   final List<String> _programs = const ['BSIT', 'BSCS', 'BSIS', 'BSEMC'];
   final List<String> _yearLevels = const ['1st', '2nd', '3rd', '4th'];
@@ -80,6 +82,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     _birthdateController.dispose();
     _idController.dispose();
     _emailController.dispose();
+    _mobileController.dispose();
     super.dispose();
   }
 
@@ -128,6 +131,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       birthdate: _birthdate!,
       studentId: _idController.text.trim(),
       email: _emailController.text.trim(),
+      mobile: _mobileController.text.trim(),
       program: _selectedProgram!,
       yearLevel: _selectedYear,
     );
@@ -136,9 +140,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
       const SnackBar(content: Text('Registration submitted successfully!')),
     );
 
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => SummaryPage(data: data)),
-    );
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => SummaryPage(data: data)));
   }
 
   void _resetForm() {
@@ -267,6 +270,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 },
               ),
               const SizedBox(height: 16),
+              TextFormField(
+                controller: _mobileController,
+                keyboardType: TextInputType.phone,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                maxLength: 11,
+                decoration: const InputDecoration(
+                  labelText: 'Mobile number',
+                  prefixIcon: Icon(Icons.phone_android),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Mobile number is required';
+                  }
+                  if (!value.startsWith('09') || value.length != 11) {
+                    return 'Use the format 09XXXXXXXXX (11 digits)';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Program',
@@ -274,10 +298,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   border: OutlineInputBorder(),
                 ),
                 items: _programs
-                    .map((program) => DropdownMenuItem(
-                          value: program,
-                          child: Text(program),
-                        ))
+                    .map(
+                      (program) => DropdownMenuItem(
+                        value: program,
+                        child: Text(program),
+                      ),
+                    )
                     .toList(),
                 onChanged: (value) => setState(() => _selectedProgram = value),
                 validator: (value) =>
@@ -395,15 +421,20 @@ class SummaryPage extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Submission Summary')),
+      appBar: AppBar(
+        title: const Text(
+          'Act 3 - $studentName',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
           // "Pop-in" animation for the check icon.
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0, end: 1),
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.elasticOut,
+            duration: const Duration(milliseconds: 2000),
+            curve: Curves.bounceOut,
             builder: (context, scale, child) {
               return Transform.scale(scale: scale, child: child);
             },
@@ -432,6 +463,7 @@ class SummaryPage extends StatelessWidget {
                 ),
                 _infoTile(Icons.badge, 'Student ID', data.studentId),
                 _infoTile(Icons.email, 'Email', data.email),
+                _infoTile(Icons.phone_android, 'Mobile', data.mobile),
                 _infoTile(Icons.school, 'Program', data.program),
                 _infoTile(Icons.stairs, 'Year level', data.yearLevel),
               ],

@@ -2,8 +2,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-// TODO: Replace this with YOUR full name.
-const String studentName = 'Juan Dela Cruz';
+const String studentName = 'Princess Ivony P. Castillo';
 
 void main() {
   runApp(const ValidationApp());
@@ -89,10 +88,13 @@ class _SignUpPageState extends State<SignUpPage> {
     if (value.length < 8) {
       return 'Password must be at least 8 characters';
     }
-    if (!RegExp(r'[0-9]').hasMatch(value)) {
-      return 'Password must contain at least one number';
-    }
-    return null;
+        if (!RegExp(r'[0-9]').hasMatch(value)) {      
+      return 'Password must contain at least one number';   
+    }                                              
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {       
+      return 'Password must contain an uppercase letter';   
+    }                                              
+    return null;                                   
   }
 
   String? _validateConfirm(String? value) {
@@ -143,7 +145,7 @@ class _SignUpPageState extends State<SignUpPage> {
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.disabled,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -182,7 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: _hidePassword,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  helperText: 'At least 8 characters with a number',
+                  helperText: 'At least 8 characters with a number and an uppercase letter',
                   prefixIcon: const Icon(Icons.lock),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(

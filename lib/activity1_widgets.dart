@@ -16,7 +16,7 @@ class WidgetShowcaseApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Activity 1',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const ShowcasePage(),
@@ -77,7 +77,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                 child: const Text('Elevated'),
               ),
               FilledButton(
-                onPressed: () => _showMessage('FilledButton pressed'),
+                onPressed: null,
                 child: const Text('Filled'),
               ),
               OutlinedButton(
@@ -229,8 +229,8 @@ class _ShowcasePageState extends State<ShowcasePage> {
           const SectionTitle('4. Animation (AnimatedContainer)'),
           Center(
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.easeInOut,
+              duration: const Duration(milliseconds: 2000),
+              curve: Curves.bounceOut,
               width: _isExpanded ? 220 : 110,
               height: _isExpanded ? 220 : 110,
               alignment: Alignment.center,
