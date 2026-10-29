@@ -104,7 +104,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Future<void> _submit() async {
-    if (_isSubmitting) return; // ignore extra taps while sending
+    if (_isSubmitting) return; 
 
     FocusScope.of(context).unfocus();
     final formIsValid = _formKey.currentState!.validate();

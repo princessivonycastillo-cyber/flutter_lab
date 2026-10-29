@@ -1,8 +1,7 @@
 // ACTIVITY 4: Flutter Gestures Playground
 import 'package:flutter/material.dart';
 
-// TODO: Replace this with YOUR full name.
-const String studentName = 'Juan Dela Cruz';
+const String studentName = 'Princess Ivony P. Castillo';
 
 void main() {
   runApp(const GesturesApp());
@@ -193,13 +192,13 @@ class _DragDemoState extends State<DragDemo> {
               left: _position.dx,
               top: _position.dy,
               child: GestureDetector(
-                onPanUpdate: (details) {
+                onHorizontalDragUpdate: (details) {
                   setState(() {
-                    final newX =
-                        (_position.dx + details.delta.dx).clamp(0.0, maxX);
-                    final newY =
-                        (_position.dy + details.delta.dy).clamp(0.0, maxY);
-                    _position = Offset(newX.toDouble(), newY.toDouble());
+                    final newX = (_position.dx + details.delta.dx).clamp(
+                      0.0,
+                      maxX,
+                    );
+                    _position = Offset(newX.toDouble(), _position.dy);
                   });
                 },
                 child: Container(
@@ -253,8 +252,9 @@ class _SwipeListDemoState extends State<SwipeListDemo> {
 
   void _removeTask(int index, DismissDirection direction) {
     final removed = _tasks[index];
-    final action =
-        direction == DismissDirection.startToEnd ? 'Completed' : 'Deleted';
+    final action = direction == DismissDirection.startToEnd
+        ? 'Completed'
+        : 'Deleted';
     setState(() => _tasks.removeAt(index));
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -284,7 +284,7 @@ class _SwipeListDemoState extends State<SwipeListDemo> {
         final task = _tasks[index];
         return Dismissible(
           key: ValueKey(task),
-          direction: DismissDirection.horizontal,
+          direction: DismissDirection.endToStart,
           // Shown when swiping RIGHT (start -> end)
           background: Container(
             color: Colors.green,
@@ -294,7 +294,7 @@ class _SwipeListDemoState extends State<SwipeListDemo> {
           ),
           // Shown when swiping LEFT (end -> start)
           secondaryBackground: Container(
-            color: Colors.red,
+            color: Colors.orange,
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 20),
             child: const Icon(Icons.delete, color: Colors.white),
